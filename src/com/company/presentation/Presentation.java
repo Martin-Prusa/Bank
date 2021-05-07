@@ -69,7 +69,7 @@ public class Presentation {
             int num = getNumber(1, 6);
             if(num == -1) return;
             else if(num == 1) createAccount();
-            else if(num == 2) showAccounts(this.logic.getLoginPerson().getAccounts());
+            else if(num == 2) showAccounts(this.logic.personAccounts(this.logic.getLoginPerson()));
             else if(num == 3) addMoneyToAccount();
             else if(num == 4) withdrawMoneyFromAccount();
             else if(num == 5) deleteAccount();
@@ -83,12 +83,12 @@ public class Presentation {
     private void deleteAccount() {
         System.out.println();
         System.out.println("---------------------------Zrušení účtu------------------------------");
-        showAccounts(this.logic.getLoginPerson().getAccounts());
+        showAccounts(this.logic.personAccounts(this.logic.getLoginPerson()));
         System.out.println("Zadej číslo účtu, který chceš zrušit. (exit = zpět)");
-        int num = getNumber(1, this.logic.getLoginPerson().getAccounts().size())-1;
-        Bank b = this.logic.getBankById(Integer.parseInt((this.logic.getLoginPerson().getAccounts().get(num).getId()+"").substring(0,3)));
+        int num = getNumber(1, this.logic.personAccounts(this.logic.getLoginPerson()).size())-1;
+        Bank b = this.logic.getBankById(Integer.parseInt((this.logic.personAccounts(this.logic.getLoginPerson()).get(num).getId()+"").substring(0,3)));
         if(num == -2) return;
-        this.logic.getLoginPerson().deleteAccount(this.logic.getLoginPerson().getAccounts().get(num), b);
+        this.logic.getLoginPerson().deleteAccount(this.logic.personAccounts(this.logic.getLoginPerson()).get(num), b);
     }
 
     private void createAccount() {
@@ -112,14 +112,14 @@ public class Presentation {
     private void addMoneyToAccount() {
         System.out.println();
         System.out.println("---------------------------Přidat peníze na účet------------------------------");
-        showAccounts(this.logic.getLoginPerson().getAccounts());
+        showAccounts(this.logic.personAccounts(this.logic.getLoginPerson()));
         System.out.println("Vyber účet, na který chceš vložit peníze. (seznam je nad touto zprávou) (exit = zpět)");
-        int ucet = getNumber(1, this.logic.getLoginPerson().getAccounts().size())-1;
+        int ucet = getNumber(1, this.logic.personAccounts(this.logic.getLoginPerson()).size())-1;
         if(ucet == -2) return;
         System.out.println("Kolik chceš vložit na účet? (exit = zpět)");
         int value = getNumber(1, Integer.MAX_VALUE);
         if(value == -1) return;
-        boolean valid = this.logic.getLoginPerson().addMoneyToAccount(this.logic.getLoginPerson().getAccounts().get(ucet), value);
+        boolean valid = this.logic.getLoginPerson().addMoneyToAccount(this.logic.personAccounts(this.logic.getLoginPerson()).get(ucet), value, this.logic.getBanks());
         if(!valid) System.out.println("Chyba při přidávání peněz.");
         else System.out.println("Přidáno na účet");
     }
@@ -127,14 +127,14 @@ public class Presentation {
     private void withdrawMoneyFromAccount() {
         System.out.println();
         System.out.println("---------------------------Vybrat peníze z účtu------------------------------");
-        showAccounts(this.logic.getLoginPerson().getAccounts());
+        showAccounts(this.logic.personAccounts(this.logic.getLoginPerson()));
         System.out.println("Vyber účet, ze kterého chceš vybrat peníze.. (seznam je nad touto zprávou) (exit = zpět)");
-        int ucet = getNumber(1, this.logic.getLoginPerson().getAccounts().size())-1;
+        int ucet = getNumber(1, this.logic.personAccounts(this.logic.getLoginPerson()).size())-1;
         if(ucet == -2) return;
         System.out.println("Kolik chceš vybrat? (exit = zpět)");
         int value = getNumber(1, Integer.MAX_VALUE);
         if(value == -1) return;
-        boolean a = this.logic.getLoginPerson().withdrawMoneyFromAccount(this.logic.getLoginPerson().getAccounts().get(ucet), value);
+        boolean a = this.logic.getLoginPerson().withdrawMoneyFromAccount(this.logic.personAccounts(this.logic.getLoginPerson()).get(ucet), value, this.logic.getBanks());
         if(!a) System.out.println("Nedostatek peněz na účtu");
         else System.out.println("Vybráno");
     }

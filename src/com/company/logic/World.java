@@ -3,6 +3,7 @@ package com.company.logic;
 import com.company.data.Data;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -47,6 +48,10 @@ public class World implements Serializable {
         people.add(new Person(name, personalId, male));
 
         return true;
+    }
+
+    public ArrayList<BankAccount> personAccounts(Person person) {
+        return person.personAccounts(this.getBanks());
     }
 
     private int getNewBankID() {
